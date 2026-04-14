@@ -1,4 +1,4 @@
-# 🔥 5-Stage Pipelined RISC-V Processor (RV32I)
+🔥 5-Stage Pipelined RISC-V Processor (RV32I)
 
 🚀 Designed and implemented a fully pipelined RISC-V CPU with hardware hazard handling and forwarding, achieving near **1 CPI throughput**.
 
