@@ -139,6 +139,7 @@ Tightly Coupled Memory (TCM)
 👨‍💻 Author
 
 Sreevenkat Eluva
+Aryan Asit
 Digital VLSI Design | RISC-V Architecture | Verilog RTL
 
 📜 License
