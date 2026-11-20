@@ -29,6 +29,22 @@ Simulated in Vivado xsim and Icarus Verilog, and run on a **Digilent ZedBoard (Z
 
 ---
 
+## Architecture
+
+![Pipeline datapath](results/architecture.png)
+
+*Datapath of `src/processor.v`. Grey text = instance names in the RTL. Solid lines = data, dashed lines = control, stall and forwarding paths.*
+
+* **IF:** `pc` holds the PC; `pcsrc` picks PC + 4, the branch/JAL target (`branch_calc`: PC_EX + immediate) or the JALR target (`{ALU_result[31:1], 0}`).
+* **ID:** `MCU` decodes the opcode, `registers` reads rs1/rs2 (written in WB through the path at the bottom), `immediate_generator` builds the I/S/B/U/J immediate.
+* **EX:** `forward_value_A/B` choose between the register value, `ALU_result_MEM` (EX/MEM) and `write_data` (MEM/WB), driven by the `forward` unit;
+  `ALU_A_select` (rs1 or PC, for AUIPC/JAL) and `ALU_B_select` (rs2 or immediate) feed the `alu`. Branch conditions use the ALU's Zero, Less and LessU flags.
+* **Hazards:** `HDU` stalls the PC and IF/ID and inserts a bubble into ID/EX for a load-use dependency. A taken branch, JAL or JALR (`control_hazard`)
+  flushes IF/ID and ID/EX.
+* **MEM / WB:** `memory` does word, halfword and byte access; `WriteBack_Selection` writes back the ALU result, the load data or PC + 4.
+
+Diagram source: [`results/make_architecture.py`](results/make_architecture.py) (matplotlib).
+
 ## Microarchitecture
 
 | Stage | Main blocks (`src/`) |
